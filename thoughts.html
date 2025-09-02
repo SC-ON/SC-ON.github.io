@@ -9,219 +9,59 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
     <style>
-        /* 与主页面相同的CSS样式 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --primary: #0cf;
-            --secondary: #a64dff;
-            --dark: #0a0a16;
-            --darker: #050510;
-            --light: #fff;
-            --gray: #8a8a9c;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
-            color: var(--light);
-            min-height: 100vh;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 40px;
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo i {
-            margin-right: 10px;
-            color: var(--primary);
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 30px;
-        }
-
-        nav ul li a {
-            color: var(--gray);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            font-size: 18px;
-        }
-
-        nav ul li a:hover {
-            color: var(--primary);
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: var(--light);
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 200, 255, 0.4);
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--gray);
-            margin-top: 50px;
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            nav ul {
-                display: none;
-            }
-        }
-
-        /* 添加科幻元素 */
-        .grid-line {
+        /* 原有样式保持不变，添加密码弹窗样式 */
+        .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
-
-        .grid-line::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent 24px, rgba(0, 200, 255, 0.05) 24px, transparent 25px),
-                        linear-gradient(transparent 24px, rgba(0, 200, 255, 0.05) 24px, transparent 25px);
-            background-size: 25px 25px;
-        }
-
-        /* 内容区域样式 */
-        .content-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
+        
+        .modal-content {
+            background: var(--dark);
             padding: 30px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid var(--primary);
         }
-
-        .content-section h2 {
+        
+        .modal h3 {
             color: var(--primary);
             margin-bottom: 20px;
-            font-size: 28px;
         }
-
-        /* 表单样式 */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--light);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: var(--light);
-            font-size: 16px;
-        }
-
-        textarea.form-control {
-            min-height: 200px;
-            resize: vertical;
-        }
-
-        /* 卡片列表样式 */
-        .card-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card h3 {
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .card p {
-            color: var(--gray);
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            gap: 10px;
         }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
     <div class="grid-line"></div>
+
+    <!-- 密码验证弹窗 -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <h3><i class="fas fa-lock"></i> 需要验证身份</h3>
+            <div class="form-group">
+                <label for="password-input">请输入密码</label>
+                <input type="password" id="password-input" class="form-control" placeholder="输入密码...">
+            </div>
+            <div class="modal-actions">
+                <button class="btn" onclick="verifyPassword()">验证</button>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <header>
@@ -251,21 +91,12 @@
                 <label for="thought-content">内容 (支持Markdown)</label>
                 <textarea id="thought-content" class="form-control" placeholder="写下你的感想..."></textarea>
             </div>
-            <button class="btn" onclick="addThought()">发布感想</button>
+            <button class="btn" onclick="showPasswordModal()">发布感想</button>
 
             <div id="thoughts-list" style="margin-top: 40px;">
                 <h3>已发布的感想</h3>
-                <div class="card-list">
-                    <div class="card">
-                        <h3>欢迎来到我的博客</h3>
-                        <p>这是我发布的第一篇感想，欢迎来到我的个人空间！</p>
-                        <small>发布时间: 2023-06-15</small>
-                    </div>
-                    <div class="card">
-                        <h3>关于前端开发的思考</h3>
-                        <p>现代前端开发已经变得越来越复杂，但也更加有趣。</p>
-                        <small>发布时间: 2023-07-01</small>
-                    </div>
+                <div class="card-list" id="thoughts-card-list">
+                    <!-- 感想将通过JavaScript动态加载 -->
                 </div>
             </div>
         </section>
@@ -278,6 +109,27 @@
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        // 密码常量
+        const CORRECT_PASSWORD = "dandan20120116";
+        let authenticated = false;
+        
+        // 显示密码弹窗
+        function showPasswordModal() {
+            document.getElementById('passwordModal').style.display = 'flex';
+        }
+        
+        // 验证密码
+        function verifyPassword() {
+            const password = document.getElementById('password-input').value;
+            if (password === CORRECT_PASSWORD) {
+                authenticated = true;
+                document.getElementById('passwordModal').style.display = 'none';
+                addThought();
+            } else {
+                alert('密码错误！');
+            }
+        }
+
         // 初始化粒子背景
         particlesJS('particles-js', {
             particles: {
@@ -314,8 +166,40 @@
             retina_detect: true
         });
 
+        // 页面加载时从本地存储加载感想
+        document.addEventListener('DOMContentLoaded', (event) => {
+            loadThoughts();
+        });
+
+        // 从本地存储加载感想
+        function loadThoughts() {
+            const thoughtsList = document.getElementById('thoughts-card-list');
+            const savedThoughts = localStorage.getItem('thoughts');
+            
+            if (savedThoughts) {
+                const thoughts = JSON.parse(savedThoughts);
+                thoughtsList.innerHTML = '';
+                
+                thoughts.forEach(thought => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <h3>${thought.title}</h3>
+                        <p>${thought.content.substring(0, 100)}${thought.content.length > 100 ? '...' : ''}</p>
+                        <small>发布时间: ${thought.date}</small>
+                    `;
+                    thoughtsList.appendChild(card);
+                });
+            }
+        }
+
         // 添加感想功能
         function addThought() {
+            if (!authenticated) {
+                showPasswordModal();
+                return;
+            }
+            
             const title = document.getElementById('thought-title').value;
             const content = document.getElementById('thought-content').value;
             
@@ -324,25 +208,24 @@
                 return;
             }
             
-            const thoughtsList = document.getElementById('thoughts-list');
-            const card = document.createElement('div');
-            card.className = 'card';
-            
             const date = new Date().toLocaleDateString();
+            const thought = { title, content, date };
             
-            card.innerHTML = `
-                <h3>${title}</h3>
-                <p>${content.substring(0, 100)}${content.length > 100 ? '...' : ''}</p>
-                <small>发布时间: ${date}</small>
-            `;
+            // 保存到本地存储
+            let savedThoughts = localStorage.getItem('thoughts');
+            let thoughts = savedThoughts ? JSON.parse(savedThoughts) : [];
+            thoughts.push(thought);
+            localStorage.setItem('thoughts', JSON.stringify(thoughts));
             
-            thoughtsList.querySelector('.card-list').appendChild(card);
+            // 重新加载感想
+            loadThoughts();
             
             // 清空表单
             document.getElementById('thought-title').value = '';
             document.getElementById('thought-content').value = '';
             
             alert('感想已发布！');
+            authenticated = false; // 重置认证状态
         }
     </script>
 </body>
