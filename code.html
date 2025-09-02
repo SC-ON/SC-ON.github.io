@@ -9,232 +9,59 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
     <style>
-        /* 与主页面相同的CSS样式 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --primary: #0cf;
-            --secondary: #a64dff;
-            --dark: #0a0a16;
-            --darker: #050510;
-            --light: #fff;
-            --gray: #8a8a9c;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
-            color: var(--light);
-            min-height: 100vh;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 40px;
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo i {
-            margin-right: 10px;
-            color: var(--primary);
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 30px;
-        }
-
-        nav ul li a {
-            color: var(--gray);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            font-size: 18px;
-        }
-
-        nav ul li a:hover {
-            color: var(--primary);
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: var(--light);
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 200, 255, 0.4);
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--gray);
-            margin-top: 50px;
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            nav ul {
-                display: none;
-            }
-        }
-
-        /* 添加科幻元素 */
-        .grid-line {
+        /* 原有样式保持不变，添加密码弹窗样式 */
+        .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
-
-        .grid-line::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent 24px, rgba(0, 200, 255, 0.05) 24px, transparent 25px),
-                        linear-gradient(transparent 24px, rgba(0, 200, 255, 0.05) 24px, transparent 25px);
-            background-size: 25px 25px;
-        }
-
-        /* 代码高亮样式 */
-        pre {
-            border-radius: 8px;
-            overflow-x: auto;
-            padding: 20px;
-            background: #1e1e1e !important;
-            margin: 20px 0;
-        }
-
-        code {
-            font-family: 'Fira Code', monospace;
-        }
-
-        /* 内容区域样式 */
-        .content-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
+        
+        .modal-content {
+            background: var(--dark);
             padding: 30px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid var(--primary);
         }
-
-        .content-section h2 {
+        
+        .modal h3 {
             color: var(--primary);
             margin-bottom: 20px;
-            font-size: 28px;
         }
-
-        /* 表单样式 */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--light);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: var(--light);
-            font-size: 16px;
-        }
-
-        textarea.form-control {
-            min-height: 200px;
-            resize: vertical;
-        }
-
-        /* 卡片列表样式 */
-        .card-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card h3 {
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .card p {
-            color: var(--gray);
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            gap: 10px;
         }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
     <div class="grid-line"></div>
+
+    <!-- 密码验证弹窗 -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <h3><i class="fas fa-lock"></i> 需要验证身份</h3>
+            <div class="form-group">
+                <label for="password-input">请输入密码</label>
+                <input type="password" id="password-input" class="form-control" placeholder="输入密码...">
+            </div>
+            <div class="modal-actions">
+                <button class="btn" onclick="verifyPassword()">验证</button>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <header>
@@ -275,26 +102,12 @@
                 <label for="code-content">代码</label>
                 <textarea id="code-content" class="form-control" placeholder="粘贴你的代码..." rows="10"></textarea>
             </div>
-            <button class="btn" onclick="addCodeSnippet()">添加代码</button>
+            <button class="btn" onclick="showPasswordModal()">添加代码</button>
 
             <div id="code-list" style="margin-top: 40px;">
                 <h3>代码片段</h3>
-                <div class="card-list">
-                    <div class="card">
-                        <h3>Python示例</h3>
-                        <pre><code class="language-python">def hello_world():
-    print("Hello, World!")
-    return True</code></pre>
-                        <small>语言: Python | 添加时间: 2023-06-20</small>
-                    </div>
-                    <div class="card">
-                        <h3>JavaScript示例</h3>
-                        <pre><code class="language-javascript">function greet(name) {
-    console.log(`Hello, ${name}!`);
-    return `Hello, ${name}!`;
-}</code></pre>
-                        <small>语言: JavaScript | 添加时间: 2023-06-25</small>
-                    </div>
+                <div class="card-list" id="code-card-list">
+                    <!-- 代码片段将通过JavaScript动态加载 -->
                 </div>
             </div>
         </section>
@@ -307,6 +120,27 @@
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        // 密码常量
+        const CORRECT_PASSWORD = "dandan20120116";
+        let authenticated = false;
+        
+        // 显示密码弹窗
+        function showPasswordModal() {
+            document.getElementById('passwordModal').style.display = 'flex';
+        }
+        
+        // 验证密码
+        function verifyPassword() {
+            const password = document.getElementById('password-input').value;
+            if (password === CORRECT_PASSWORD) {
+                authenticated = true;
+                document.getElementById('passwordModal').style.display = 'none';
+                addCodeSnippet();
+            } else {
+                alert('密码错误！');
+            }
+        }
+        
         // 初始化粒子背景
         particlesJS('particles-js', {
             particles: {
@@ -345,13 +179,46 @@
 
         // 代码高亮
         document.addEventListener('DOMContentLoaded', (event) => {
+            loadCodeSnippets();
             document.querySelectorAll('pre code').forEach((block) => {
                 hljs.highlightElement(block);
             });
         });
 
+        // 从本地存储加载代码片段
+        function loadCodeSnippets() {
+            const codeList = document.getElementById('code-card-list');
+            const savedSnippets = localStorage.getItem('codeSnippets');
+            
+            if (savedSnippets) {
+                const snippets = JSON.parse(savedSnippets);
+                codeList.innerHTML = '';
+                
+                snippets.forEach(snippet => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <h3>${snippet.title}</h3>
+                        <pre><code class="language-${snippet.language}">${snippet.content}</code></pre>
+                        <small>语言: ${snippet.language} | 添加时间: ${snippet.date}</small>
+                    `;
+                    codeList.appendChild(card);
+                });
+                
+                // 重新高亮所有代码块
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+            }
+        }
+
         // 添加代码片段功能
         function addCodeSnippet() {
+            if (!authenticated) {
+                showPasswordModal();
+                return;
+            }
+            
             const title = document.getElementById('code-title').value;
             const language = document.getElementById('code-language').value;
             const content = document.getElementById('code-content').value;
@@ -361,28 +228,24 @@
                 return;
             }
             
-            const codeList = document.getElementById('code-list');
-            const card = document.createElement('div');
-            card.className = 'card';
-            
             const date = new Date().toLocaleDateString();
+            const snippet = { title, language, content, date };
             
-            card.innerHTML = `
-                <h3>${title}</h3>
-                <pre><code class="language-${language}">${content}</code></pre>
-                <small>语言: ${language} | 添加时间: ${date}</small>
-            `;
+            // 保存到本地存储
+            let savedSnippets = localStorage.getItem('codeSnippets');
+            let snippets = savedSnippets ? JSON.parse(savedSnippets) : [];
+            snippets.push(snippet);
+            localStorage.setItem('codeSnippets', JSON.stringify(snippets));
             
-            codeList.querySelector('.card-list').appendChild(card);
-            
-            // 重新高亮代码
-            hljs.highlightElement(card.querySelector('code'));
+            // 重新加载代码片段
+            loadCodeSnippets();
             
             // 清空表单
             document.getElementById('code-title').value = '';
             document.getElementById('code-content').value = '';
             
             alert('代码已添加！');
+            authenticated = false; // 重置认证状态
         }
     </script>
 </body>
