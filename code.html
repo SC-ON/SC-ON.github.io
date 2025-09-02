@@ -9,7 +9,229 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
     <style>
-        /* 原有样式保持不变，添加密码弹窗样式 */
+        /* 保留所有原始科幻样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #0cf;
+            --secondary: #a64dff;
+            --dark: #0a0a16;
+            --darker: #050510;
+            --light: #fff;
+            --gray: #8a8a9c;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 18px;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--light);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 200, 255, 0.4);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+            margin-top: 50px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+        }
+
+        /* 科幻网格元素 */
+        .grid-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .grid-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 24px, rgba(0, 200, 255, 0.05) 24px, transparent 25px),
+                        linear-gradient(transparent 24px, rgba(0, 200, 255, 0.05) 24px, transparent 25px);
+            background-size: 25px 25px;
+        }
+
+        /* 代码高亮样式 */
+        pre {
+            border-radius: 8px;
+            overflow-x: auto;
+            padding: 20px;
+            background: #1e1e1e !important;
+            margin: 20px 0;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* 内容区域样式 */
+        .content-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .content-section h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--light);
+            font-size: 16px;
+        }
+
+        textarea.form-control {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        /* 卡片列表样式 */
+        .card-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: var(--gray);
+        }
+
+        /* 新增的密码弹窗样式 */
         .modal {
             display: none;
             position: fixed;
@@ -30,11 +252,15 @@
             width: 90%;
             max-width: 400px;
             border: 1px solid var(--primary);
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
         }
         
         .modal h3 {
             color: var(--primary);
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .modal-actions {
@@ -55,7 +281,7 @@
             <h3><i class="fas fa-lock"></i> 需要验证身份</h3>
             <div class="form-group">
                 <label for="password-input">请输入密码</label>
-                <input type="password" id="password-input" class="form-control" placeholder="输入密码...">
+                <input type="password" id="password-input" class="form-control" placeholder="输入密码..." autocomplete="off">
             </div>
             <div class="modal-actions">
                 <button class="btn" onclick="verifyPassword()">验证</button>
@@ -127,6 +353,7 @@
         // 显示密码弹窗
         function showPasswordModal() {
             document.getElementById('passwordModal').style.display = 'flex';
+            document.getElementById('password-input').focus();
         }
         
         // 验证密码
@@ -135,6 +362,7 @@
             if (password === CORRECT_PASSWORD) {
                 authenticated = true;
                 document.getElementById('passwordModal').style.display = 'none';
+                document.getElementById('password-input').value = '';
                 addCodeSnippet();
             } else {
                 alert('密码错误！');
@@ -177,12 +405,13 @@
             retina_detect: true
         });
 
-        // 代码高亮
-        document.addEventListener('DOMContentLoaded', (event) => {
+        // 页面加载时执行
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始化代码高亮
+            hljs.highlightAll();
+            
+            // 加载保存的代码片段
             loadCodeSnippets();
-            document.querySelectorAll('pre code').forEach((block) => {
-                hljs.highlightElement(block);
-            });
         });
 
         // 从本地存储加载代码片段
