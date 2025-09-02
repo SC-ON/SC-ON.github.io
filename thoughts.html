@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科幻个人博客 | 个人感想</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+    <style>
+        /* 与主页面相同的CSS样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #0cf;
+            --secondary: #a64dff;
+            --dark: #0a0a16;
+            --darker: #050510;
+            --light: #fff;
+            --gray: #8a8a9c;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 18px;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--light);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 200, 255, 0.4);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+            margin-top: 50px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+        }
+
+        /* 添加科幻元素 */
+        .grid-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .grid-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 24px, rgba(0, 200, 255, 0.05) 24px, transparent 25px),
+                        linear-gradient(transparent 24px, rgba(0, 200, 255, 0.05) 24px, transparent 25px);
+            background-size: 25px 25px;
+        }
+
+        /* 内容区域样式 */
+        .content-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .content-section h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--light);
+            font-size: 16px;
+        }
+
+        textarea.form-control {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        /* 卡片列表样式 */
+        .card-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: var(--gray);
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="grid-line"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <span>星际空间站</span>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">主页</a></li>
+                    <li><a href="#" class="active">个人感想</a></li>
+                    <li><a href="code.html">代码库</a></li>
+                    <li><a href="accounts.html">其他账号</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="content-section">
+            <h2><i class="fas fa-brain"></i> 个人感想</h2>
+            <div class="form-group">
+                <label for="thought-title">标题</label>
+                <input type="text" id="thought-title" class="form-control" placeholder="输入感想标题">
+            </div>
+            <div class="form-group">
+                <label for="thought-content">内容 (支持Markdown)</label>
+                <textarea id="thought-content" class="form-control" placeholder="写下你的感想..."></textarea>
+            </div>
+            <button class="btn" onclick="addThought()">发布感想</button>
+
+            <div id="thoughts-list" style="margin-top: 40px;">
+                <h3>已发布的感想</h3>
+                <div class="card-list">
+                    <div class="card">
+                        <h3>欢迎来到我的博客</h3>
+                        <p>这是我发布的第一篇感想，欢迎来到我的个人空间！</p>
+                        <small>发布时间: 2023-06-15</small>
+                    </div>
+                    <div class="card">
+                        <h3>关于前端开发的思考</h3>
+                        <p>现代前端开发已经变得越来越复杂，但也更加有趣。</p>
+                        <small>发布时间: 2023-07-01</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2023 星际空间站 | 科幻个人博客</p>
+            <p>使用 HTML, CSS 和 JavaScript 构建</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // 初始化粒子背景
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#0cf" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#0cf",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+
+        // 添加感想功能
+        function addThought() {
+            const title = document.getElementById('thought-title').value;
+            const content = document.getElementById('thought-content').value;
+            
+            if (!title || !content) {
+                alert('请填写标题和内容！');
+                return;
+            }
+            
+            const thoughtsList = document.getElementById('thoughts-list');
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            const date = new Date().toLocaleDateString();
+            
+            card.innerHTML = `
+                <h3>${title}</h3>
+                <p>${content.substring(0, 100)}${content.length > 100 ? '...' : ''}</p>
+                <small>发布时间: ${date}</small>
+            `;
+            
+            thoughtsList.querySelector('.card-list').appendChild(card);
+            
+            // 清空表单
+            document.getElementById('thought-title').value = '';
+            document.getElementById('thought-content').value = '';
+            
+            alert('感想已发布！');
+        }
+    </script>
+</body>
+</html>
