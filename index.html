@@ -53,6 +53,7 @@
             padding: 20px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 40px;
+            position: relative;
         }
 
         .logo {
@@ -64,6 +65,7 @@
             color: transparent;
             display: flex;
             align-items: center;
+            z-index: 10;
         }
 
         .logo i {
@@ -203,14 +205,65 @@
             
             nav ul {
                 display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--darker);
+                flex-direction: column;
+                padding: 20px;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                z-index: 100;
+            }
+            
+            nav ul.show {
+                display: flex;
+            }
+            
+            nav ul li {
+                margin: 15px 0;
+                text-align: center;
+            }
+            
+            .menu-toggle {
+                display: block;
+                background: none;
+                border: none;
+                color: var(--light);
+                font-size: 24px;
+                cursor: pointer;
+                z-index: 100;
             }
             
             .hero h1 {
-                font-size: 36px;
+                font-size: 32px;
             }
             
             .hero p {
-                font-size: 18px;
+                font-size: 16px;
+                padding: 0 15px;
+            }
+            
+            .module-card {
+                padding: 20px;
+            }
+            
+            .module-card h2 {
+                font-size: 20px;
+            }
+            
+            .module-card p {
+                font-size: 14px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .menu-toggle {
+                display: none;
+            }
+            
+            nav ul {
+                display: flex !important;
             }
         }
 
@@ -390,8 +443,11 @@
                 <i class="fas fa-rocket"></i>
                 <span>星际空间站</span>
             </div>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
             <nav>
-                <ul>
+                <ul id="navMenu">
                     <li><a href="#" class="active">主页</a></li>
                     <li><a href="thoughts.html">个人感想</a></li>
                     <li><a href="code.html">代码库</a></li>
@@ -424,14 +480,14 @@
             </div>
             
             <div class="module-card">
-                <i class="fa-headphones" /></i> <!-- 替换为合适的FontAwesome图标 -->
+                <i class="fas fa-music"></i>
                 <h2>个人创作：歌词提示器</h2>
                 <p>上传MP3和LCR文件就可以边听歌边看歌词了！LRC文件可以到歌曲宝网站获得</p>
                 <a href="gctsq.html" class="btn">进入板块</a>
             </div>
 
             <div class="module-card">
-                <i class="" /></i> <!-- 替换为合适的FontAwesome图标 -->
+                <i class="fas fa-gamepad"></i>
                 <h2>转载游戏：打砖块</h2>
                 <p>从网上转载的打砖块游戏，很简单</p>
                 <a href="dzk.html" class="btn">进入板块</a>
@@ -443,8 +499,6 @@
                 <p>我的其他社交媒体账号和在线平台</p>
                 <a href="accounts.html" class="btn">探索更多</a>
             </div>
-            
-            
         </section>
 
         <footer>
@@ -490,6 +544,59 @@
             },
             retina_detect: true
         });
+
+        // 移动端菜单切换
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('show');
+        });
+
+        // 根据设备类型调整粒子数量
+        function adjustParticles() {
+            if (window.innerWidth < 768) {
+                // 移动设备减少粒子数量
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 40, density: { enable: true, value_area: 800 } },
+                        color: { value: "#0cf" },
+                        shape: { type: "circle" },
+                        opacity: { value: 0.5, random: true },
+                        size: { value: 3, random: true },
+                        line_linked: {
+                            enable: true,
+                            distance: 100,
+                            color: "#0cf",
+                            opacity: 0.4,
+                            width: 1
+                        },
+                        move: {
+                            enable: true,
+                            speed: 2,
+                            direction: "none",
+                            random: true,
+                            straight: false,
+                            out_mode: "out",
+                            bounce: false
+                        }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: {
+                            onhover: { enable: true, mode: "grab" },
+                            onclick: { enable: true, mode: "push" },
+                            resize: true
+                        }
+                    },
+                    retina_detect: true
+                });
+            }
+        }
+
+        // 初始调整
+        adjustParticles();
+
+        // 窗口大小改变时调整
+        window.addEventListener('resize', adjustParticles);
     </script>
 </body>
 </html>
